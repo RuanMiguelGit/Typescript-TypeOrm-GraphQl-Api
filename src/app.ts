@@ -4,13 +4,14 @@ import { PingResolver } from './resolvers/ping'
 import  { buildSchema }  from 'type-graphql'
 
 
-async function startServer() {
+export async function startServer() {
     const app = express()
 
     const server = new ApolloServer({
         schema: await buildSchema({
             resolvers: [PingResolver]
-        })
+        }),
+        context:({req, res}) => ({req, res})
     }) 
     
     server.applyMiddleware({app, path: '/graphql'})
